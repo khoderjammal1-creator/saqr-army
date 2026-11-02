@@ -1,42 +1,79 @@
 import os
+import time
+import random
 from flask import Flask
 from threading import Thread
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
 from telegram import Update
 
-# هون التصحيح
 TOKEN = (os.getenv("TELEGRAM_TOKEN") or "").strip()
 print(f"TOKEN FOUND: {bool(TOKEN)} - LEN: {len(TOKEN)}")
 
-if not TOKEN:
-    print("ERROR: TELEGRAM_TOKEN not set in Render Environment!")
-if ":" not in TOKEN and TOKEN:
-    print("ERROR: Token missing ':' - you pasted only ID!")
 app = Flask(__name__)
 @app.route('/')
 def home():
-    return "Saqr Army 500 - Online 🦅"
-
-# --- اوامر البوت ---
-async def start(update, context):
-    await update.message.reply_text("🦅 اهلا قائد! انا شغال! اكتب 'تداول'")
-
-async def handle_msg(update, context):
-    txt = update.message.text
-    if "تداول" in txt:
-        await update.message.reply_text("🔥 قرار مجلس الـ500: شراء الآن! #صقر")
-    else:
-        await update.message.reply_text(f"وصلتني: {txt}")
+    return "🦅 Saqr Army Bot LIVE - عربي 🔥"
 
 def run_flask():
-    app.run(host='0.0.0.0', port=10000)
+    app.run(host="0.0.0.0", port=10000)
 
-def run_bot():
-    bot_app = ApplicationBuilder().token(TOKEN).build()
-    bot_app.add_handler(CommandHandler("start", start))
-    bot_app.add_handler(MessageHandler(filters.TEXT, handle_msg))
-    bot_app.run_polling()
+# === ردود عربية ===
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(
+        "🦅 أهلا يا قائد! \n\n"
+        "أنا بوت جيش صقر - جاهز! 🔥\n"
+        "احكيني شو بدك؟\n\n"
+        "الأوامر:\n"
+        "/start - البداية\n"
+        "/help - مساعدة\n"
+        "/jesh - حالة الجيش"
+    )
 
-if __name__ == "__main__":
-    Thread(target=run_flask).start()
-    run_bot()
+async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(
+        "📜 أوامر جيش صقر:\n\n"
+        "• احكيني أي شي بالعربي برد عليك\n"
+        "• /jesh - بشوفلك وضع الجيش\n"
+        "• /nukte - نكتة عسكرية 😂\n"
+        "• /hikme - حكمة اليوم"
+    )
+
+async def jesh(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(
+        "🪖 تقرير جيش صقر:\n\n"
+        "✅ البوت شغال 100%\n"
+        "✅ السيرفر Live\n"
+        "✅ الرد العربي فعال\n"
+        "✅ القائد مسيطر 🔥\n\n"
+        "جاهزين لأي مهمة يا قائد!"
+    )
+
+async def nukte(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    nukat = [
+        "مرة عسكري راح عالبحر، قالولو ليش لابس بوط؟ قال بلكي صار غزو برمائي 😂",
+        "جندي سأل القائد: فينا ناخد بريك؟ قالو: ايه، بريك قلب العدو! 😎",
+        "مرة جيش صقر فات عالمعركة، العدو هرب قبل ما نبلش! 🦅"
+    ]
+    await update.message.reply_text(random.choice(nukat))
+
+async def hikme(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    hikam = [
+        "🦅 النصر صبر ساعة.",
+        "🔥 القائد الناجح هو اللي بيسمع لجيشو.",
+        "⚔️ لا تؤجل معركة اليوم للغد.",
+        "🪖 القوة مش بالعدد، القوة بالعزيمة!"
+    ]
+    await update.message.reply_text(random.choice(hikam))
+
+# === الرد الذكي بالعربي على أي كلام ===
+async def talk_arabic(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    msg = update.message.text.lower()
+    
+    if "سلام" in msg or "مرحبا" in msg or "هلا" in msg:
+        reply = "وعليكم السلام يا قائد! 🦅 هلا والله، شو الأخبار؟"
+    elif "كيفك" in msg or "شلونك" in msg:
+        reply = "الحمدلله بألف خير! انت كيفك يا بطل؟ جاهز للمهمة؟ 🔥"
+    elif "شو اسمك" in msg:
+        reply = "أنا صقر 🦅 بوت جيش صقر، الذراع اليمين للقائد!"
+    elif "بتحبني" in msg:
+        reply = "أكيد بحبك يا قائد! انت قائ
