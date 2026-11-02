@@ -1,12 +1,17 @@
 import os
 from flask import Flask
 from threading import Thread
-from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+from telegram import Update
 
-TOKEN = os.getenv("TELEGRAM_TOKEN""@SaqrAmyBot").strip()
-print(f"TOKEN LEN: {len(TOKEN)} - START: {TOKEN[:5]}...")
-if ":" not in TOKEN:
-    print("ERROR: TOKEN MISSING COLON! You pasted only ID!")
+# هون التصحيح
+TOKEN = (os.getenv("TELEGRAM_TOKEN") or "").strip()
+print(f"TOKEN FOUND: {bool(TOKEN)} - LEN: {len(TOKEN)}")
+
+if not TOKEN:
+    print("ERROR: TELEGRAM_TOKEN not set in Render Environment!")
+if ":" not in TOKEN and TOKEN:
+    print("ERROR: Token missing ':' - you pasted only ID!")
 app = Flask(__name__)
 @app.route('/')
 def home():
