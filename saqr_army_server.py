@@ -3,7 +3,7 @@ from flask import Flask
 from threading import Thread
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters
 
-TOKEN = os.getenv("TELEGRAM_TOKEN").strip()
+TOKEN = os.getenv("TELEGRAM_TOKEN""@SaqrAmyBot").strip()
 print(f"TOKEN LEN: {len(TOKEN)} - START: {TOKEN[:5]}...")
 if ":" not in TOKEN:
     print("ERROR: TOKEN MISSING COLON! You pasted only ID!")
