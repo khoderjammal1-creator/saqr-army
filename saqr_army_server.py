@@ -6,8 +6,8 @@ from telegram import Bot
 from telegram.ext import Application
 import datetime
 
-TOKEN = os.environ.get("TELEGRAM_TOKEN")
-CHAT_ID = os.environ.get("CHAT_ID")
+TOKEN = os.environ.get("@SaqrAmyBot")
+CHAT_ID = os.environ.get("9126988116")
 
 app = Flask(__name__)
 
