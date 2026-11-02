@@ -93,7 +93,7 @@ def run_bot():
             time.sleep(100)
 
     print("✅ TOKEN OK - بوت عربي STARTING...")
-    bot_app = ApplicationBuilder().token(TOKEN).build()
+    bot_app = ApplicationBuilder().token(TOKEN).updater(None).build()
     
     bot_app.add_handler(CommandHandler("start", start))
     bot_app.add_handler(CommandHandler("help", help_cmd))
